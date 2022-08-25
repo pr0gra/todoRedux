@@ -16,7 +16,6 @@ function App() {
       //  id: Date.now(),
       isDone: false,
     };
-    console.log(todo);
     dispatch({ type: "ADD_TODO", payload: todo });
   };
   const deleteTodo = (index: number) => {
@@ -34,16 +33,21 @@ function App() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        width: "0 auto",
+        flexDirection: "column",
+        margin: "0 auto",
       }}
       className="App"
     >
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addTodo(e.target.name.value);
+          if (e.target.name.value === "") {
+            return;
+          } else {
+            addTodo(e.target.name.value);
+          }
         }}
-        action=""
+        
       >
         <input name="name" type="text" />
         <button>ДОБАВИТЬ</button>
@@ -52,11 +56,16 @@ function App() {
       {todos.length === 0 ? (
         <div>Добавьте задачу</div>
       ) : (
-        <div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
           {todos.map((todo: Todo, index: number) => {
             return (
-              <div key={index}>
-                {todo.name}{" "}
+              <div
+                style={{ display: "flex", alignItems: "center" }}
+                key={index}
+              >
+                <div style={{ color: todo.isDone ? "green" : "black" }}>
+                  {todo.name}
+                </div>
                 <button
                   onClick={() => {
                     deleteTodo(index);
@@ -68,7 +77,6 @@ function App() {
                   onClick={() => {
                     toggleTodo(index);
                   }}
-                  
                 >
                   Done
                 </button>
