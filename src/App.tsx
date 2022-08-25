@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 interface Todo {
   name: string;
-  id: number;
+  // id: number;
   isDone: boolean;
 }
 
@@ -13,17 +13,20 @@ function App() {
   const addTodo = (name: string) => {
     const todo: Todo = {
       name: name,
-      id: Date.now(),
+      //  id: Date.now(),
       isDone: false,
     };
-    console.log(todo)
+    console.log(todo);
     dispatch({ type: "ADD_TODO", payload: todo });
   };
-  const deleteTodo = (todo: Todo) => {
-    console.log(todo)
-    dispatch({ type: "DELETE_TODO", payload: todo.id })
-    
-};
+  const deleteTodo = (index: number) => {
+    console.log(index);
+    dispatch({ type: "DELETE_TODO", payload: index });
+  };
+
+  const toggleTodo = (index: number) => {
+    dispatch({ type: "TOGGLE_TODO", payload: index });
+  };
 
   return (
     <div
@@ -50,15 +53,25 @@ function App() {
         <div>Добавьте задачу</div>
       ) : (
         <div>
-          {todos.map((todo: Todo) => {
+          {todos.map((todo: Todo, index: number) => {
             return (
-              <div key={todo.id}>
+              <div key={index}>
                 {todo.name}{" "}
                 <button
                   onClick={() => {
-                    deleteTodo(todo);
+                    deleteTodo(index);
                   }}
-                >Del</button>
+                >
+                  Del
+                </button>
+                <button
+                  onClick={() => {
+                    toggleTodo(index);
+                  }}
+                  
+                >
+                  Done
+                </button>
               </div>
             );
           })}
